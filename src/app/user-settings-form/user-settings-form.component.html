@@ -1,11 +1,22 @@
 <div class="container">
+
   <h2>User Settings</h2>
+
+  <div class="row" *ngIf="postError">
+    <div class="col-12">
+      <div class="alert alert-danger">
+        {{postErrorMsg }}
+      </div>
+    </div>
+  </div>
+
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
     <div class="form-group">
       <label for="name">Name</label>
       <input id=name name=name class="form-control" type="text" placeholder="Name" [(ngModel)]="userSettings.name"
         required #nameField="ngModel" [class.field-error]="form.submitted && nameField.invalid"
-        (blur)="onBlur(nameField)">
+        (blur)="onBlur(nameField)" required>
       <div [hidden]="!form.submitted || nameField.valid" class="alert alert-danger">
         Name is required
       </div>
@@ -48,9 +59,7 @@
       <label for="subscriptionType">Subscription Type</label>
       <select class="form-control" id="subscriptionType" name="subscriptionType"
         [(ngModel)]="userSettings.subscriptionType">
-        <option>Monthly</option>
-        <option>Annually</option>
-        <option>Lifetime</option>
+        <option *ngFor="let subscriptionType of subscriptionTypes | async"> {{subscriptionType}} </option>
       </select>
     </div>
 
